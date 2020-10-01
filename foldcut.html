@@ -1,0 +1,75 @@
+<html>
+
+<head>
+<title> Fold-and-Cut </title>
+</head>
+
+<body>
+<h1> Fold-and-Cut Editor ! ^-^</h1>
+<p> Use "Esc" to abort polygon, "x" to delete previous entire polygon. </p>
+
+<button id="toggle">Show/hide unused creases</button>
+<button id="live">Live computation on/off</button>
+<button id="skeleton">Toggle straight skeleton only</button>
+<button id="download">Download PDF</button>
+
+<p> </p>
+<canvas id="myCanvas" width="726" height="561"
+style="border:1px solid #c3c3c3;">
+Your browser does not support the canvas element.
+</canvas> 
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+ctx.strokeStyle = "green";
+ctx.lineWidth = 6;
+ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+ctx.lineWidth = 1;
+ctx.strokeStyle = "black";
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script> 
+<script src="https://edemaine.github.io/fold/dist/fold.js"></script>
+<script src="huh.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.debug.js"></script>
+
+<script> 
+download.addEventListener("click", function(){
+var imgData = canvas.toDataURL("image/jpeg", 1.0);
+var pdf = new jsPDF({
+	orientation: 'landscape',
+	unit: 'in',
+	format: 'letter'
+});
+
+pdf.addImage(imgData, "JPEG", 0, 0, 11, 8.5);
+var download = document.getElementById('download');
+pdf.save("download.pdf");
+}, false);
+</script>
+
+
+<h3> Coordinates: </h3>
+<p id="coords"></p>
+<h3> Fold-and-Cut input: </h3>
+<p id="clicks"></p>
+
+<h3> Manual input: </h3>
+<p> Manually input list of polygon vertices, separated by "~", 
+e.g. ~ (100, 100), (210, 140), (150, 200), (100, 100) ~</p>
+Fold-and-Cut input: <input type ="text" name = "manualClickSeq">
+<input type = "button" id = "manual" value = "Make crease pattern">
+<p> </p>
+<a id = "programatically" href="#" download="filename.txt">Download crease pattern in FOLD format</a>
+
+<!-- <h3>FOLD Viewer</h3>
+<div id="demaineview"></div> -->
+
+</body>
+
+</html>
